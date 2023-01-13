@@ -27,8 +27,73 @@ const cards = [
 
 const memoryGame = new MemoryGame(cards);
 
+const turnCard = card => {
+  card.classList.toggle('turned')
+}
+
+const turnCardAndPlay = card => {
+  turnCard(card)
+  const cardName = card.getAttribute('data-card-name')
+  card.id = cardName
+  memoryGame.pickedCards.push( cardName )
+  if( memoryGame.pickedCards.length == 2){
+    checkPair()
+  }
+}
+
+const checkPair = () => {
+  if( memoryGame.checkIfPair( memoryGame.pickedCards[0], memoryGame.pickedCards[1] )){
+    updateScore()
+    if( memoryGame.checkIfFinished() ){
+      finish()
+    }
+    emptyPickedCardsList()
+  }else{
+    updateScore()
+    console.log(memoryGame.pickedCards)
+    setTimeout( hidePickedCards, 500 )
+    
+  }
+}
+
+const finish = () => {
+  alert('Bravo!')
+}
+
+const updateScore = () => {
+  const pairsClickedSpan = document.getElementById('pairs-clicked')
+  const pairsGuessedSpan = document.getElementById('pairs-guessed')
+
+  pairsClickedSpan.textContent = memoryGame.pairsClicked
+  pairsGuessedSpan.textContent = memoryGame.pairsGuessed
+
+
+}
+
+const hidePickedCards = () => {
+  
+  console.log('Inside hidePickedCards')
+  console.log(memoryGame.pickedCards)
+  const card1 = document.getElementById(memoryGame.pickedCards[0])
+  const card2 = document.getElementById(memoryGame.pickedCards[1])
+
+  card1.classList.toggle("turned")
+  card2.classList.toggle("turned")
+  card1.id = ''
+  card2.id = ''
+  emptyPickedCardsList()
+  
+}
+
+const emptyPickedCardsList = () => {
+  // console.log(memoryGame.pickedCards)
+  memoryGame.pickedCards = []
+  // console.log(memoryGame.pickedCards)
+}
+
 window.addEventListener('load', (event) => {
   let html = '';
+  memoryGame.shuffleCards()
   memoryGame.cards.forEach((pic) => {
     html += `
       <div class="card" data-card-name="${pic.name}">
@@ -45,7 +110,7 @@ window.addEventListener('load', (event) => {
   document.querySelectorAll('.card').forEach((card) => {
     card.addEventListener('click', () => {
       // TODO: write some code here
-      console.log(`Card clicked: ${card}`);
+      turnCardAndPlay(card)
     });
   });
 });

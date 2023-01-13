@@ -1,0 +1,39 @@
+function generateRandom( limit ){
+  return Math.floor( Math.random() * limit )
+}
+
+// function shuffle( inputArr ){
+//     const res = []
+//     let iterations = inputArr.length    
+//     for(let i=0; i<iterations; i++){
+//         let randomIndex = generateRandom( inputArr.length )
+//         res.push( inputArr.splice( randomIndex , 1 )[0] )        
+//     }
+//     // [...inputArr] = res
+//     return res
+// }
+
+function shuffle( inputArr ){
+    const res = []
+    const arr = [...inputArr]
+    let iterations = arr.length    
+    for(let i=0; i<iterations; i++){
+        let randomIndex = generateRandom( arr.length )
+        res.push( arr.splice( randomIndex , 1 )[0] )        
+    }
+    // [...inputArr] = res
+    return res
+}
+
+// const shuffle = arrArg => {
+//     let res = []
+//     let arr = [...arrArg]
+//     let iterations = arr.length
+//     for(let i = 0; i < iterations ; i++){
+//         let picked = randomNumber(arr.length);
+//         res.push(arr[picked])
+//         arr.splice( picked, 1 )
+//     }
+//     return res
+
+// }
